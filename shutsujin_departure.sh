@@ -108,18 +108,18 @@ show_battle_cry() {
     # 足軽隊列（オリジナル）
     # ═══════════════════════════════════════════════════════════════════════════
     echo -e "\033[1;34m  ╔═════════════════════════════════════════════════════════════════════════════╗\033[0m"
-    echo -e "\033[1;34m  ║\033[0m                    \033[1;37m【 足 軽 隊 列 ・ 八 名 配 備 】\033[0m                      \033[1;34m║\033[0m"
+    echo -e "\033[1;34m  ║\033[0m                    \033[1;37m【 足 軽 隊 列 ・ 五 名 配 備 】\033[0m                      \033[1;34m║\033[0m"
     echo -e "\033[1;34m  ╚═════════════════════════════════════════════════════════════════════════════╝\033[0m"
 
     cat << 'ASHIGARU_EOF'
 
-       /\      /\      /\      /\      /\      /\      /\      /\
-      /||\    /||\    /||\    /||\    /||\    /||\    /||\    /||\
-     /_||\   /_||\   /_||\   /_||\   /_||\   /_||\   /_||\   /_||\
-       ||      ||      ||      ||      ||      ||      ||      ||
-      /||\    /||\    /||\    /||\    /||\    /||\    /||\    /||\
-      /  \    /  \    /  \    /  \    /  \    /  \    /  \    /  \
-     [足1]   [足2]   [足3]   [足4]   [足5]   [足6]   [足7]   [足8]
+       /\      /\      /\      /\      /\
+      /||\    /||\    /||\    /||\    /||\
+     /_||\   /_||\   /_||\   /_||\   /_||\
+       ||      ||      ||      ||      ||
+      /||\    /||\    /||\    /||\    /||\
+      /  \    /  \    /  \    /  \    /  \
+     [足1]   [足2]   [足3]   [足4]   [足5]
 
 ASHIGARU_EOF
 
@@ -132,7 +132,7 @@ ASHIGARU_EOF
     echo -e "\033[1;33m  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\033[0m"
     echo -e "\033[1;33m  ┃\033[0m  \033[1;37m🏯 multi-agent-shogun\033[0m  〜 \033[1;36m戦国マルチエージェント統率システム\033[0m 〜           \033[1;33m┃\033[0m"
     echo -e "\033[1;33m  ┃\033[0m                                                                           \033[1;33m┃\033[0m"
-    echo -e "\033[1;33m  ┃\033[0m    \033[1;35m将軍\033[0m: プロジェクト統括    \033[1;31m家老\033[0m: タスク管理    \033[1;34m足軽\033[0m: 実働部隊×8      \033[1;33m┃\033[0m"
+    echo -e "\033[1;33m  ┃\033[0m    \033[1;35m将軍\033[0m: プロジェクト統括    \033[1;31m家老\033[0m: タスク管理    \033[1;34m足軽\033[0m: 実働部隊×5      \033[1;33m┃\033[0m"
     echo -e "\033[1;33m  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\033[0m"
     echo ""
 }
@@ -154,7 +154,7 @@ tmux kill-session -t shogun 2>/dev/null && log_info "  └─ shogun本陣、撤
 # STEP 2: 報告ファイルリセット
 # ═══════════════════════════════════════════════════════════════════════════════
 log_info "📜 前回の軍議記録を破棄中..."
-for i in {1..8}; do
+for i in {1..5}; do
     cat > ./queue/reports/ashigaru${i}_report.yaml << EOF
 worker_id: ashigaru${i}
 task_id: null
@@ -192,21 +192,6 @@ assignments:
     target_path: null
     status: idle
   ashigaru5:
-    task_id: null
-    description: null
-    target_path: null
-    status: idle
-  ashigaru6:
-    task_id: null
-    description: null
-    target_path: null
-    status: idle
-  ashigaru7:
-    task_id: null
-    description: null
-    target_path: null
-    status: idle
-  ashigaru8:
     task_id: null
     description: null
     target_path: null
@@ -283,36 +268,31 @@ log_success "  └─ ダッシュボード初期化完了 (言語: $LANG_SETTIN
 echo ""
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# STEP 4: multiagentセッション作成（9ペイン：karo + ashigaru1-8）
+# STEP 4: multiagentセッション作成（6ペイン：karo + ashigaru1-6）
 # ═══════════════════════════════════════════════════════════════════════════════
-log_war "⚔️ 家老・足軽の陣を構築中（9名配備）..."
+log_war "⚔️ 家老・足軽の陣を構築中（6名配備）..."
 
 # 最初のペイン作成
 tmux new-session -d -s multiagent -n "agents"
 
-# 3x3グリッド作成（合計9ペイン）
+# 3x2リッド作成（合計6ペイン）
 # 最初に3列に分割
 tmux split-window -h -t "multiagent:0"
 tmux split-window -h -t "multiagent:0"
 
-# 各列を3行に分割
+# 各列を2行に分割
 tmux select-pane -t "multiagent:0.0"
 tmux split-window -v
+tmux select-pane -t "multiagent:0.2"
+tmux split-window -v
+tmux select-pane -t "multiagent:0.4"
 tmux split-window -v
 
-tmux select-pane -t "multiagent:0.3"
-tmux split-window -v
-tmux split-window -v
+# ペインタイトル設定（0: karo, 1-5: ashigaru1-5）
+PANE_TITLES=("karo" "ashigaru1" "ashigaru2" "ashigaru3" "ashigaru4" "ashigaru5")
+PANE_COLORS=("1;31" "1;34" "1;34" "1;34" "1;34" "1;34")  # karo: 赤, ashigaru: 青
 
-tmux select-pane -t "multiagent:0.6"
-tmux split-window -v
-tmux split-window -v
-
-# ペインタイトル設定（0: karo, 1-8: ashigaru1-8）
-PANE_TITLES=("karo" "ashigaru1" "ashigaru2" "ashigaru3" "ashigaru4" "ashigaru5" "ashigaru6" "ashigaru7" "ashigaru8")
-PANE_COLORS=("1;31" "1;34" "1;34" "1;34" "1;34" "1;34" "1;34" "1;34" "1;34")  # karo: 赤, ashigaru: 青
-
-for i in {0..8}; do
+for i in {0..5}; do
     tmux select-pane -t "multiagent:0.$i" -T "${PANE_TITLES[$i]}"
     tmux send-keys -t "multiagent:0.$i" "cd $(pwd) && export PS1='(\[\033[${PANE_COLORS[$i]}m\]${PANE_TITLES[$i]}\[\033[0m\]) \[\033[1;32m\]\w\[\033[0m\]\$ ' && clear" Enter
 done
@@ -345,8 +325,8 @@ if [ "$SETUP_ONLY" = false ]; then
     # 少し待機（安定のため）
     sleep 1
 
-    # 家老 + 足軽（9ペイン）
-    for i in {0..8}; do
+    # 家老 + 足軽（6ペイン）
+    for i in {0..5}; do
         tmux send-keys -t "multiagent:0.$i" "claude --dangerously-skip-permissions"
         tmux send-keys -t "multiagent:0.$i" Enter
     done
@@ -445,7 +425,7 @@ NINJA_EOF
     # 足軽に指示書を読み込ませる（1-8）
     sleep 2
     log_info "  └─ 足軽に指示書を伝達中..."
-    for i in {1..8}; do
+    for i in {1..5}; do
         tmux send-keys -t "multiagent:0.$i" "instructions/ashigaru.md を読んで役割を理解せよ。汝は足軽${i}号である。"
         sleep 0.3
         tmux send-keys -t "multiagent:0.$i" Enter
@@ -475,16 +455,13 @@ echo "     ┌──────────────────────
 echo "     │  Pane 0: 将軍 (SHOGUN)      │  ← 総大将・プロジェクト統括"
 echo "     └─────────────────────────────┘"
 echo ""
-echo "     【multiagentセッション】家老・足軽の陣（3x3 = 9ペイン）"
+echo "     【multiagentセッション】家老・足軽の陣（3x2 = 6ペイン）"
 echo "     ┌─────────┬─────────┬─────────┐"
-echo "     │  karo   │ashigaru3│ashigaru6│"
-echo "     │  (家老) │ (足軽3) │ (足軽6) │"
+echo "     │  karo   │ashigaru2│ashigaru4│"
+echo "     │  (家老) │ (足軽2) │ (足軽4) │"
 echo "     ├─────────┼─────────┼─────────┤"
-echo "     │ashigaru1│ashigaru4│ashigaru7│"
-echo "     │ (足軽1) │ (足軽4) │ (足軽7) │"
-echo "     ├─────────┼─────────┼─────────┤"
-echo "     │ashigaru2│ashigaru5│ashigaru8│"
-echo "     │ (足軽2) │ (足軽5) │ (足軽8) │"
+echo "     │ashigaru1│ashigaru3│ashigaru5│"
+echo "     │ (足軽1) │ (足軽3) │ (足軽5) │"
 echo "     └─────────┴─────────┴─────────┘"
 echo ""
 
@@ -503,7 +480,7 @@ if [ "$SETUP_ONLY" = true ]; then
     echo "  │  tmux send-keys -t shogun 'claude --dangerously-skip-permissions' Enter │"
     echo "  │                                                          │"
     echo "  │  # 家老・足軽を一斉召喚                                   │"
-    echo "  │  for i in {0..8}; do \\                                   │"
+    echo "  │  for i in {0..6}; do \\                                   │"
     echo "  │    tmux send-keys -t multiagent:0.\$i \\                   │"
     echo "  │      'claude --dangerously-skip-permissions' Enter       │"
     echo "  │  done                                                    │"

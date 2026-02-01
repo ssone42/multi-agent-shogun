@@ -325,7 +325,7 @@ RESULTS+=("設定ファイル: OK")
 log_step "STEP 7: キューファイル初期化"
 
 # 足軽用タスクファイル作成
-for i in {1..8}; do
+for i in {1..5}; do
     TASK_FILE="$SCRIPT_DIR/queue/tasks/ashigaru${i}.yaml"
     if [ ! -f "$TASK_FILE" ]; then
         cat > "$TASK_FILE" << EOF
@@ -340,10 +340,10 @@ task:
 EOF
     fi
 done
-log_info "足軽タスクファイル (1-8) を確認/作成しました"
+log_info "足軽タスクファイル (1-5) を確認/作成しました"
 
 # 足軽用レポートファイル作成
-for i in {1..8}; do
+for i in {1..5}; do
     REPORT_FILE="$SCRIPT_DIR/queue/reports/ashigaru${i}_report.yaml"
     if [ ! -f "$REPORT_FILE" ]; then
         cat > "$REPORT_FILE" << EOF
@@ -355,7 +355,7 @@ result: null
 EOF
     fi
 done
-log_info "足軽レポートファイル (1-8) を確認/作成しました"
+log_info "足軽レポートファイル (1-5) を確認/作成しました"
 
 RESULTS+=("キューファイル: OK")
 

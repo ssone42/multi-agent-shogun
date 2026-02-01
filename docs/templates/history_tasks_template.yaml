@@ -1,0 +1,14 @@
+# テンプレート: {date}_tasks.yaml
+project_id: "{project_id}"
+date: "{YYYY-MM-DD}"
+tasks:
+  - cmd_id: "{cmd_id}"
+    timestamp: "{ISO8601}"
+    command: "{コマンド内容}"
+    status: completed
+    subtasks:
+      - task_id: "{subtask_id}"
+        worker: "{ashigaru_N}"
+        description: "{サブタスク内容}"
+        status: done
+        completed_at: "{ISO8601}"

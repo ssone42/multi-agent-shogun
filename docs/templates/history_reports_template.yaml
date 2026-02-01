@@ -1,0 +1,12 @@
+# テンプレート: {date}_reports.yaml
+project_id: "{project_id}"
+date: "{YYYY-MM-DD}"
+reports:
+  - task_id: "{subtask_id}"
+    worker_id: "{ashigaru_N}"
+    timestamp: "{ISO8601}"
+    status: done
+    summary: "{サマリ}"
+    files_modified: []
+    skill_candidate:
+      found: false

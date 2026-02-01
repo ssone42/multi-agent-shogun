@@ -1,0 +1,6 @@
+project_id: multi-agent-shogun
+name: "multi-agent-shogun システム本体"
+status: active
+last_updated: "2026-02-01T23:51:00"
+last_task: cmd_004
+summary: "足軽8体→5体への変更完了"

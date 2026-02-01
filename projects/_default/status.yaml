@@ -1,0 +1,10 @@
+project_id: _default
+name: "Default Project"
+status: active
+last_activity: null
+statistics:
+  total_commands: 0
+  total_subtasks: 0
+  completed_subtasks: 0
+  skill_candidates_found: 0
+current_command: null

@@ -1,0 +1,32 @@
+project_id: multi-agent-shogun
+date: "2026-02-01"
+tasks:
+  - cmd_id: cmd_004
+    timestamp: "2026-02-01T23:42:59"
+    command: "足軽8体→5体への変更に伴うコード修正"
+    status: completed
+    completed_at: "2026-02-01T23:51:00"
+    subtasks:
+      - task_id: subtask_005
+        worker: ashigaru1
+        description: "shutsujin_departure.sh 修正"
+        status: done
+        changes:
+          - "バナー「八名配備」→「五名配備」"
+          - "足軽ASCIIアート 8体→5体"
+          - "システム情報「実働部隊×8」→「×5」"
+          - "karo_to_ashigaru.yaml 初期化から ashigaru6-8 削除"
+          - "布陣図「3x3=9ペイン」→「3x2=6ペイン」"
+      - task_id: subtask_006
+        worker: ashigaru2
+        description: "first_setup.sh 修正"
+        status: done
+        changes:
+          - "足軽タスクファイル作成ループ {1..8}→{1..5}"
+          - "ログメッセージ「(1-8)」→「(1-5)」"
+          - "足軽レポートファイル作成ループ {1..8}→{1..5}"
+    result:
+      files_modified:
+        - shutsujin_departure.sh
+        - first_setup.sh
+      syntax_check: passed
